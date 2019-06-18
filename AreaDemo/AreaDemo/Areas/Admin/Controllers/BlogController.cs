@@ -1,22 +1,32 @@
-﻿using AreaDemo.Models;
+﻿using AreaDemo.Helpers;
+using AreaDemo.Models;
 using System.Linq;
 using System.Web.Mvc;
 
 namespace AreaDemo.Areas.Admin.Controllers
 {
+
+    [Auth]
     public class BlogController : Controller
     {
         NeviaEntities db = new NeviaEntities();
         // GET: Admin/Blog
         public ActionResult Index()
         {
-
-            if (Session["isLogin"] != null && (bool)Session["isLogin"] == true)
-            {
-                return View(db.Blogs.ToList());
-            }
-            return RedirectToAction("Index", "Login");
+            return View(db.Blogs.ToList());
         }
+
+        [HttpGet]
+        public ActionResult Create()
+        {
+            AdminUser user = Session["User"] as AdminUser;
+            if ( user.Level != 0 )
+            {
+                return RedirectToAction("Index");
+            }
+            return View();
+        }
+
 
         public ActionResult Edit(int Id)
         {

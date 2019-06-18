@@ -23,6 +23,8 @@ namespace AreaDemo.Areas.Admin.Controllers
             return View();
         }
 
+
+        [HttpPost]
         public ActionResult Signin(AdminUser admin)
         {
             bool isMatch = false;
@@ -42,6 +44,7 @@ namespace AreaDemo.Areas.Admin.Controllers
                 if (isMatch)
                 {
                     Session["isLogin"] = true;
+                    Session["User"] = adm;
                     return RedirectToAction("Index", "Home", new { area = "Admin"});
                 }
             }
@@ -55,6 +58,7 @@ namespace AreaDemo.Areas.Admin.Controllers
         public ActionResult Signout()
         {
             Session["isLogin"] = null;
+            Session["User"] = null;
             return RedirectToAction("Index", "Login");
 
         }
